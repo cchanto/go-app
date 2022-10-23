@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment                
+metadata:
+  name: take-home          
+spec:
+  replicas: 3                   
+  selector:
+    matchLabels:
+      app: take-home       
+  template:                      
+    metadata:
+      labels:                    
+        app: take-home
+    spec:
+      containers:
+      - name: take-home
+        image: cchanto/take-home 
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+         - containerPort: 8080  
+        livenessProbe:          
+          httpGet:
+            path: /health
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 15
+          timeoutSeconds: 5
+        readinessProbe:          # To check if the Pod is ready to serve traffic or not
+          httpGet:
+            path: /readiness
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 5
+          timeoutSeconds: 1  

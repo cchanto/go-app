@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: take-home 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: take-home 
+  template:
+    metadata:
+      labels:
+        app: take-home
+    spec:
+      containers:
+      - name: take-home 
+        image: callicoder/take-home:1.0.0
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080
